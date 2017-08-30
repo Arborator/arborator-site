@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content=""/>
+  <meta name="author" content=""/>
+
+  <title>{title}</title>
+
+  <!-- <link rel="icon" 
+  type="image/png" 
+  href=""/> -->
+  
+      <!-- Bootstrap Core CSS -->
+      <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+
+      <!-- Fonts -->
+      <link href="../font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+      <link href="../css/animate.css" rel="stylesheet" type="text/css"/>
+      <!-- Squad theme CSS -->
+      <link href="../css/style.css" rel="stylesheet" type="text/css"/>
+      <link href="../color/default.css" rel="stylesheet" type="text/css"/>
+      <!-- animsition.css -->
+      <link rel="stylesheet" href="../css/animsition.min.css">
+      <!-- pace style -->
+      <link rel="stylesheet" href="../css/pace.css">
+            <!-- bootstrap-switch css -->
+      <link href="../css/bootstrap-switch.min.css" rel="stylesheet">
+
+      <!-- Arborator files -->
+      <script src="../js/jquery.min.js"></script>
+      <script type='text/javascript' src='../js/modernizr.js'></script>
+      <script type="text/javascript" src="../js/pace.min.js"></script>
+      <script type="text/javascript" src="../js/raphael.js"></script>
+      <script type="text/javascript" src="../js/arborator.view.js"></script>
+      <script type="text/javascript" src="../js/justDrawConll.js"></script>
+      <script type="text/javascript" src="../js/conll2tree.js"></script>
+      <script type="text/javascript" src="../js/filesaver.min.js"></script>
+      
+      
+    </head>
+
+    <body id="page-top" data-spy="scroll" data-target=".navbar-custom" class="bg-dark">
+      <div id="loading">
+        <div id='loading-progress-bar' class='progress overlay-content' > </div>
+        <div  class='overlay-content' > <button type='button' class='btn btn-danger opacity-hover' id='loaderstop'>Stop!</button>  </div>
+      </div>
+     <div id="page-wrap">
+      
+<!-- The actual snackbar -->
+<div id="snackbar">Copied to clipboard !</div>
+
+     <header>
+      <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+       <div class="container">
+        <div class="navbar-header page-scroll">
+         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+          <i class="fa fa-bars"></i>
+        </button>
+        <a class="navbar-brand animsition-link" href="../../index.html">
+          <img src="../img/icons/list-orange.svg" alt="" title="Samples List" class="opacity-hover"/>
+        </a>
+        <span>{samplename}</span>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+       <ul class="nav navbar-nav">
+        <li ><a href="../../project.html" class="animsition-link">Project</a></li>
+        <li ><a href="../../licence.html" class="animsition-link">Project Licence</a></li>
+        <li ><a href="../../about.html" class="animsition-link">About</a></li>
+      </ul>
+    </div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav>
+</header>
+
+<div class="arrownav">
+  <div id="divOnLeft" style="  position: fixed; left: 50px;">
+    <a class="animsition-link " href="{previous}"><img src="../img/icons/left-arrow-key-grey.svg" class="arrownav-hover" onmouseover="this.src='../img/icons/left-arrow-key.svg';" onmouseout="$(this).addClass('shrink');   this.src='../img/icons/left-arrow-key-grey.svg'; $(this).addClass(arrownav-hover);" /></a>
+  </div>
+  <div id="divOnRight" style=" position: fixed; right: 50px;">
+    <a class="animsition-link " href="{next}"><img src="../img/icons/right-arrow-key-grey.svg" class="arrownav-hover" onmouseover="this.src='../img/icons/right-arrow-key.svg';" onmouseout="$(this).addClass('shrink');   this.src='../img/icons/right-arrow-key-grey.svg'; $(this).addClass(arrownav-hover);" /></a>
+  </div>
+  <!-- <div id="divOnRightBottom" style=" position: fixed; right: 65px; bottom: 50px;">
+    <button type="button" class="btn btn-success opacity-hover" id="loader">Speed Up!</button>
+  </div>
+  <div id="divOnRightBottom2" style=" position: fixed; right: 200px; bottom: 50px;">
+    <input class="opacity-hover" type="checkbox" name="my-checkbox" checked data-size="normal" data-on-color="primary" data-off-color="danger" data-on-text="Timer" data-off-text="Scroll" data-label-text="Auto Load" data-handle-width="200">
+  </div> -->
+  <div class="container" style="position: fixed; top: 75px; left: 10px; width: 20%;">
+    <div class="row">
+      <div class="col-sm-3"><button type="button" class="btn btn-danger opacity-hover2" onclick="stopload()" title="Stop: stop charging further trees. Charge only on scroll" id="stop"><img src="../img/icons/stop-button.svg"/></button></div>
+      <div class="col-sm-3"><button type="button" class="btn btn-default opacity-hover2" onclick="resumeload()" title="Show: show all trees - pausing between trees (default)" id="show"><img src="../img/icons/play-arrow.svg"/></button></div>
+      <div class="col-sm-3"><button type="button" class="btn btn-info opacity-hover2" title="Fast forward: show all trees without pausing - might slow down the browser until finished" id="loader"><img src="../img/icons/fast-forward-button.svg"/></button></div>
+      <div class="col-sm-3"><button type="button" class="btn btn-success opacity-hover2" onclick="exportall();" title="Download: Save the currently loaded trees. To save them all speed up the loading using the fast forward button. Then press this button."><img src="../img/icons/download.svg"/></button></div>
+    </div>
+  </div>
+</div>
+
+<section id="main-content" style="height:100%">
+ <div id="guts" style="height:100%; padding-bottom:0;" class="animsition" data-animsition-in-class="fade-in-up"
+  data-animsition-in-duration="500"
+  data-animsition-out-class="fade-out-down"
+  data-animsition-out-duration="300">
+
+
+
+  <!-- Section: samples -->
+  <section id="samplelist" class="wide-section text-center bg-dark">
+   <div class="heading-about">
+    <div class="container">
+     <div class="row">
+      <div class="col-lg-8 col-lg-offset-2">
+       <div class="wow fadeInDown" data-wow-delay="0.2s">
+        <div class="section-heading">
+         <h2 id="samplename">{samplename}</h2>
+         <img src="../img/icons/arrow-down-grey.svg" />
+
+       </div>
+     </div>
+   </div>
+ </div>
+</div>
+</div>
+
+<div id="treecontainer" class="container wide">
+
+  <div class="row">
+   <div class="col-sm-12 col-md-12">
+    <div class="wow fadeInUp" data-wow-delay="0.2s">
+     <div class="service-box">
+      <div class="service-icon">
+        <a href="http://arborator.ilpga.fr/" target="_blank" alt="Arborator Website">
+       <img src="../img/icons/arboratorNano.png" alt="" title="Arborator" class="opacity-hover"/>
+     </a>
+     </div>
+     <div class="service-desc">
+       <!-- <h5>Trees</h5> -->
+       <div class="list">
+         {conlls}
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
+</div><!-- /container -->   
+</section> 
+<!-- /Section: samples -->
+</div>
+
+
+</section><!-- /main-content -->
+
+</div>
+
+
+<!-- Core JavaScript Files -->
+<script src="../js/jquery.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/jquery.easing.min.js"></script>  
+<script src="../js/jquery.scrollTo.js"></script>
+<script src="../js/wow.min.js"></script>
+<script src="../js/animsition.min.js"></script>
+<!-- Custom Theme JavaScript -->
+<script src="../js/custom.js"></script>
+<script src="../js/clipboard.min.js"></script>
+<script src="../js/bootstrap-switch.min.js"></script>
+    <script>
+$(document).ready(function() {
+  $(".animsition").animsition({
+    inClass: 'fade-in-down',
+    outClass: 'fade-out-down',
+    inDuration: 1500,
+    outDuration: 800,
+    linkElement: '.animsition-link',
+    // e.g. linkElement: 'a:not([target="_blank"]):not([href^="#"])'
+    loading: false,
+    loadingParentElement: 'body', //animsition wrapper element
+    loadingClass: 'animsition-loading',
+    loadingInner: '', // e.g '<img src="loading.svg" />'
+    timeout: false,
+    timeoutCountdown: 5000,
+    onLoadEvent: true,
+    browser: [ 'animation-duration', '-webkit-animation-duration'],
+    // "browser" option allows you to disable the "animsition" in case the css property in the array is not supported by your browser.
+    // The default setting is to disable the "animsition" in a browser that does not support "animation-duration".
+    overlay : false,
+    overlayClass : 'animsition-overlay-slide',
+    overlayParentElement : 'body',
+    transition: function(url){ window.location.href = url; }
+  });
+});
+
+$("[name='my-checkbox']").bootstrapSwitch();
+
+</script>
+</body>
+
+</html>
